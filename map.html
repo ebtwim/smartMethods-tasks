@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Robot Path Drawing</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f2f2f2; /* Set your desired background color here */
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        #canvas {
+            width: 800px;
+            height: 400px;
+            border: 1px solid black;
+            margin-bottom: 10px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-right: 5px;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Robot Path Drawing</h1>
+    <canvas id="canvas"></canvas>
+    <br>
+    <button id="btnUp" class="button">Up</button>
+    <button id="btnDown" class="button">Down</button>
+    <button id="btnLeft" class="button">Left</button>
+    <button id="btnRight" class="button">Right</button>
+    <button id="btnStop" class="button">Stop</button>
+    <br>
+    <br>
+    <button id="btnClear" class="button">Clear</button>
+    <button id="btnCapture" class="button">Capture</button>
+
+    <script>
+    
+        document.addEventListener("DOMContentLoaded", function() {
+            var canvas = document.getElementById("canvas");
+            var ctx = canvas.getContext("2d");
+            var x = canvas.width / 2;
+            var y = canvas.height / 2;
+
+            function drawLine(newX, newY) {
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+                ctx.lineTo(newX, newY);
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                x = newX;
+                y = newY;
+            }
+
+            document.getElementById("btnUp").addEventListener("click", function() {
+                var newY = y - 20;
+                drawLine(x, newY);
+            });
+
+            document.getElementById("btnDown").addEventListener("click", function() {
+                var newY = y + 20;
+                drawLine(x, newY);
+            });
+
+            document.getElementById("btnLeft").addEventListener("click", function() {
+                var newX = x - 20;
+                drawLine(newX, y);
+            });
+
+            document.getElementById("btnRight").addEventListener("click", function() {
+                var newX = x + 20;
+                drawLine(newX, y);
+            });
+
+            document.getElementById("btnStop").addEventListener("click", function() {
+                // Do nothing, just stop the robot
+            });
+
+            document.getElementById("btnClear").addEventListener("click", function() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                x = canvas.width / 2;
+                y = canvas.height / 2;
+            });
+
+            document.getElementById("btnCapture").addEventListener("click", function() {
+				var image = new Image();
+                image.src = canvas.toDataURL("image/png");
+                image.addEventListener("load", function() {
+                    var link = document.createElement("a");
+                    link.href = image.src;
+                    link.download = "robot_path.png";
+                    link.click();
+				});
+			});
+        });
+  
+    </script>
+</body>
+</html>
+
